@@ -1,0 +1,20 @@
+{
+    "state": {
+        "TargetWord": "",
+        "NumPlayers": 0,
+        "GuessedLetters": [],
+        "IncorrectGuesses": 0,
+        "Players": [],
+        "Progress": "",
+        "HangmanStages": [
+            " +---+\n |   |\n     |\n     |\n     |\n     |\n=========",
+            " +---+\n |   |\n O   |\n     |\n     |\n     |\n=========",
+            " +---+\n |   |\n O   |\n |   |\n     |\n     |\n=========",
+            " +---+\n |   |\n O   |\n/|   |\n     |\n     |\n=========",
+            " +---+\n |   |\n O   |\n/|\\ |\n     |\n     |\n=========",
+            " +---+\n |   |\n O   |\n/|\\ |\n/    |\n     |\n=========",
+            " +---+\n |   |\n O   |\n/|\\ |\n/ \\ |\n     |\n========="
+          ]
+    }
+}
+
