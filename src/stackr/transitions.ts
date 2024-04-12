@@ -6,7 +6,7 @@ import { Hangman, HangmanState } from "./machine";
 const calculateCurrentProgress = (state: HangmanState) => {
   const guessedLettersSet = new Set(state.GuessedLetters); // Convert array to Set
   const display = Array.from(state.TargetWord)
-      .map(letter => guessedLettersSet.has(letter) ? letter : '_')
+      .map(letter => guessedLettersSet.has(letter) ? letter : letter === ' ' ? ' ' : '_')
       .join(' ');
   state.Progress = `Current progress: ${display}\n`;
   state.Progress += `Remaining attempts: ${6 - state.IncorrectGuesses}\n`;
@@ -16,7 +16,7 @@ const calculateCurrentProgress = (state: HangmanState) => {
 
 const calculateGameStatus = (state: HangmanState) => {
   const guessedLettersSet = new Set(state.GuessedLetters); // Convert array to Set
-  const isWinner = Array.from(state.TargetWord).every(letter => guessedLettersSet.has(letter));
+  const isWinner = Array.from(state.TargetWord).filter(letter => letter !== ' ').every(letter => guessedLettersSet.has(letter));
 
   if (isWinner) {
     state.Progress += "\nCongratulations, you've beaten the game!\n";

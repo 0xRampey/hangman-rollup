@@ -10,7 +10,6 @@ import { stackrConfig } from "../stackr.config";
 
 const { domain } = stackrConfig;
 
-type ActionName = keyof typeof schemas;
 console.log("Starting server...");
 
 // const hangmanMachine = mru.stateMachines.get<HangmanMachine>("hangman");
