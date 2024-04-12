@@ -17,7 +17,7 @@ const stackrConfig: StackrConfig = {
     batchTime: 1000,
   },
   syncer: {
-    slotTime: 1000,
+    slotTime: 100000,
     vulcanRPC: process.env.VULCAN_RPC as string,
     L1RPC: process.env.L1_RPC as string,
   },

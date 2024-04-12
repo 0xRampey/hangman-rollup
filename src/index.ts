@@ -70,11 +70,11 @@ app.get("/", (_req: Request, res: Response) => {
   const htmlContent = `
   <html>
     <head>
-      <title>Hangman Game</title>
+      <title>Hangman, the Game</title>
       <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js"></script>
       <script>
         let signer;  // This will hold the signer object once the user connects their wallet
-  
+        var gameID = "";
         // Function to connect to MetaMask
         async function connectWallet() {
           if (typeof window.ethereum !== 'undefined') {
@@ -112,7 +112,7 @@ app.get("/", (_req: Request, res: Response) => {
         async function getSignedBody(actionName, data, numPlayers) {
           const inputs = actionName === "createGame"
             ? { word: data, numPlayers: Number(numPlayers) }
-            : { letter: data };
+            : { letter: data, gameID: gameID };
   
           const schema = actionName === "createGame"
             ? ${JSON.stringify(schemas["createGame"].EIP712TypedData.types)}
@@ -130,12 +130,12 @@ app.get("/", (_req: Request, res: Response) => {
             randomString: Math.random().toString(36).substring(2, 12)
           });
         }
-       
         // Function to update the game state periodically
       async function updateGameState() {
         try {
           const response = await fetch('/gameState');  // Adjust the endpoint as necessary
           const gameState = await response.json();
+          gameID = gameState.GameID;
           document.getElementById('gameState').innerText = gameState.Progress;  // Adjust how you display based on response structure
         } catch (error) {
           console.error('Failed to fetch game state:', error);

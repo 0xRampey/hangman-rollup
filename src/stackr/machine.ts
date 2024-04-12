@@ -2,16 +2,20 @@ import { State, StateMachine } from "@stackr/sdk/machine";
 import genesisState from "../../genesis-state.json";
 import { reducers } from "./transitions";
 import { ethers, BytesLike } from "ethers";
+import { AddressLike } from "ethers";
 
 export type HangmanState = {
   TargetWord: string;
   NumPlayers: number;
+  GameCreator: AddressLike;
+  GameID: string;
   GuessedLetters: string[];
   IncorrectGuesses: number;
   Players: {
-    Address: string;
-    Guesses: string[];
-  }[];
+    [key: string]: {
+      CorrectGuesses: number;
+    };
+  };
   Progress: string;
   HangmanStages: string[];
 };

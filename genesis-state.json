@@ -2,9 +2,11 @@
     "state": {
         "TargetWord": "",
         "NumPlayers": 0,
+        "GameCreator": "",
+        "GameID": "",
         "GuessedLetters": [],
         "IncorrectGuesses": 0,
-        "Players": [],
+        "Players": {},
         "Progress": "",
         "HangmanStages": [
             " +---+\n |   |\n     |\n     |\n     |\n     |\n=========",
