@@ -2,8 +2,8 @@ import express, { Request, Response } from "express";
 
 import { ActionEvents } from "@stackr/sdk";
 import { Playground } from "@stackr/sdk/plugins";
-import { schemas } from "./stackr/actions.ts";
-import { mru } from "./hangman.ts";
+import { schemas } from "./stackr/action.ts";
+import { mru } from "./rollup.ts";
 import { reducers } from "./stackr/transitions.ts";
 import { HangmanState } from "./stackr/machine.ts";
 import { stackrConfig } from "../stackr.config";
@@ -89,10 +89,10 @@ app.get("/", (_req: Request, res: Response) => {
             alert("Please install MetaMask to use this feature.");
           }
         }
-  
+
         const schemas = ${JSON.stringify(schemas)};
         const domain = ${JSON.stringify(domain)};
-  
+
         async function sendRequest(actionName, data, numPlayers) {
           if (!signer) {
             alert("Please connect your wallet first!");
@@ -107,21 +107,21 @@ app.get("/", (_req: Request, res: Response) => {
           const result = await response.json();
           console.log(result);
         }
-  
+
         async function getSignedBody(actionName, data, numPlayers) {
           const inputs = actionName === "createGame"
             ? { word: data, numPlayers: Number(numPlayers) }
             : { letter: data, gameID: gameID };
-  
+
           const schema = actionName === "createGame"
             ? ${JSON.stringify(schemas["createGame"].EIP712TypedData.types)}
             : ${JSON.stringify(schemas["guessLetter"].EIP712TypedData.types)};
-  
+
           console.log("schema", schema);
           console.log("inputs", inputs);
           console.log("domain", domain);
           const signature = await signer._signTypedData(domain, schema, inputs);
-  
+
           return JSON.stringify({
             msgSender: await signer.getAddress(),
             signature,
@@ -167,4 +167,3 @@ app.get("/gameState", (_req: Request, res: Response) => {
 app.listen(8080, () => {
   console.log("listening on port 8080");
 });
-

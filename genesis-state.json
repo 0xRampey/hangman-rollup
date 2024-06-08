@@ -3,7 +3,7 @@
         "TargetWord": "",
         "NumPlayers": 0,
         "GameCreator": "",
-        "GameID": "",
+        "GameID": 0,
         "GuessedLetters": [],
         "IncorrectGuesses": 0,
         "Players": {},
