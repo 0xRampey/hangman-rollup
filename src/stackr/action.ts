@@ -8,7 +8,7 @@ export const createGameSchema = new ActionSchema("createGame", {
 
 export const guessLetterSchema = new ActionSchema("guessLetter", {
   letter: SolidityType.STRING,
-  gameID: SolidityType.STRING,
+  gameID: SolidityType.UINT,
 });
 
 // transferSchema is a collection of all the transfer actions

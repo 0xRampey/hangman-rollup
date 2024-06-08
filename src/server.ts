@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 
-import { ActionEvents } from "@stackr/sdk";
+import { ActionEvents, ActionExecutionStatus } from "@stackr/sdk";
 import { Playground } from "@stackr/sdk/plugins";
 import { schemas } from "./stackr/action.ts";
 import { mru } from "./rollup.ts";
@@ -49,19 +49,25 @@ app.post("/:reducerName", async (req: Request, res: Response) => {
   try {
     const newAction = schema.actionFrom({ inputs, msgSender, signature });
     const ack = await mru.submitAction(reducerName, newAction);
-    res.status(201).send({ ack });
+    const actionHash = ack.actionHash;
+    await new Promise((resolve) => {
+      events.subscribe(ActionEvents.EXECUTION_STATUS, (action) => {
+        if (action.actionHash === actionHash) {
+          if (action.status === ActionExecutionStatus.ACCEPTED) {
+            console.log(`Action ${actionHash} executed successfully.`);
+            res.status(200).send({ message: 'Action executed successfully', details: { actionHash, status: action.status } });
+          } else if (action.status === ActionExecutionStatus.REVERTED) {
+            console.log(`Action ${actionHash} failed to execute.`);
+            res.status(400).send({ error: 'Action failed to execute', details: { actionHash, status: action.status } });
+          }
+          resolve(res);
+        }
+      });
+    });
   } catch (e: any) {
     res.status(400).send({ error: e.message });
   }
   return;
-});
-
-events.subscribe(ActionEvents.SUBMIT, (args) => {
-  console.log("Submitted an action", args);
-});
-
-events.subscribe(ActionEvents.EXECUTION_STATUS, async (action) => {
-  console.log("Executed an action", action);
 });
 
 app.get("/", (_req: Request, res: Response) => {
@@ -143,7 +149,7 @@ app.get("/", (_req: Request, res: Response) => {
       }
 
       // Set up periodic polling, e.g., every 5 seconds
-      setInterval(updateGameState, 1000);
+      setInterval(updateGameState, 100);
       </script>
     </head>
     <body>
@@ -167,3 +173,4 @@ app.get("/gameState", (_req: Request, res: Response) => {
 app.listen(8080, () => {
   console.log("listening on port 8080");
 });
+

@@ -13,10 +13,10 @@ const stackrConfig: StackrConfig = {
   },
   sequencer: {
     batchSize: 16,
-    batchTime: 10,
+    batchTime: 100,
   },
   syncer: {
-    slotTime: 1000,
+    slotTime: 100000,
     vulcanRPC: process.env.VULCAN_RPC as string,
     L1RPC: process.env.L1_RPC as string,
   },
