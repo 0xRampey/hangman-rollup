@@ -13,7 +13,7 @@ const stackrConfig: StackrConfig = {
   },
   sequencer: {
     batchSize: 16,
-    batchTime: 100,
+    batchTime: 50,
   },
   syncer: {
     slotTime: 100000,

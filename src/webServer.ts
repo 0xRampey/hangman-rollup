@@ -6,7 +6,7 @@ import { schemas } from "./stackr/action.ts";
 import { mru } from "./rollup.ts";
 import { reducers } from "./stackr/transitions.ts";
 import { HangmanState } from "./stackr/machine.ts";
-import { stackrConfig } from "../stackr.config";
+import { stackrConfig } from "../stackr.config.ts";
 
 const { domain } = stackrConfig;
 

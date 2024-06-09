@@ -4,17 +4,18 @@ import { calculateCurrentProgress, calculateGameStatus } from "./utils.ts";
 
 type CreateGameInput = {
   word: string;
-  numPlayers: number;
+  creator: string;
 };
 
 type GuessLetterInput = {
   letter: string;
+  player: string;
 };
 
 // --------- State Transition Handlers ---------
 const createGame: STF<Hangman, CreateGameInput> = {
-  handler: ({ inputs, state, msgSender }) => {
-    const { word, numPlayers } = inputs;
+  handler: ({ inputs, state }) => {
+    const { word, creator} = inputs;
     if (state.TargetWord.length > 0) {
       throw new Error("Game is already in progress");
     }
@@ -26,8 +27,7 @@ const createGame: STF<Hangman, CreateGameInput> = {
       throw new Error("Word must be alphanumeric with spaces");
     }
     state.TargetWord = word.toLowerCase();
-    state.NumPlayers = numPlayers;
-    state.GameCreator = msgSender;
+    state.GameCreator = creator;
     state.GameID = state.GameID + 1;
     state = calculateCurrentProgress(state);
     return state;
@@ -35,12 +35,12 @@ const createGame: STF<Hangman, CreateGameInput> = {
 };
 
 const guessLetter: STF<Hangman, GuessLetterInput> = {
-  handler: ({ inputs, state, msgSender }) => {
+  handler: ({ inputs, state }) => {
     if (state.TargetWord.length === 0) {
       throw new Error("Game is not in progress");
     }
-    const { letter } = inputs;
-    if (msgSender === state.GameCreator) {
+    const { letter, player } = inputs;
+    if (player === state.GameCreator) {
       throw new Error("Game creator cannot guess the letter");
     }
     if (letter.length !== 1) {
@@ -50,8 +50,8 @@ const guessLetter: STF<Hangman, GuessLetterInput> = {
     if (!letter.match(/^[a-zA-Z0-9]$/)) {
       throw new Error("Letter must be alphanumeric");
     }
-    if (!state["Players"][msgSender.toString()]) {
-      state["Players"][msgSender.toString()] = {
+    if (!state["Players"][player]) {
+      state["Players"][player] = {
         CorrectGuesses: 0,
       };
     }
@@ -59,7 +59,7 @@ const guessLetter: STF<Hangman, GuessLetterInput> = {
     const l = letter.toLowerCase();
     if (state["TargetWord"].includes(l)) {
       state["GuessedLetters"] = [...state["GuessedLetters"], l]; // Assuming GuessedLetters is initially an array
-      state["Players"][msgSender.toString()].CorrectGuesses++;
+      state["Players"][player].CorrectGuesses++;
     } else {
       state["IncorrectGuesses"]++;
     }

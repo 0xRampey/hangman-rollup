@@ -3,12 +3,13 @@ import { ActionSchema, SolidityType } from "@stackr/sdk";
 // createAccountSchema is a schema for creating an account
 export const createGameSchema = new ActionSchema("createGame", {
   word: SolidityType.STRING,
-  numPlayers: SolidityType.UINT,
+  creator: SolidityType.STRING,
 });
 
 export const guessLetterSchema = new ActionSchema("guessLetter", {
   letter: SolidityType.STRING,
-  gameID: SolidityType.UINT,
+  nonce: SolidityType.UINT,
+  player: SolidityType.STRING,
 });
 
 // transferSchema is a collection of all the transfer actions
