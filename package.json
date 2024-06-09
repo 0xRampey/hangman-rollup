@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@stackr/sdk": "latest",
+    "dotenv": "^16.4.5",
     "ethers": "^6.7.1",
     "express": "^4.18.2",
     "frog": "^0.11.6",

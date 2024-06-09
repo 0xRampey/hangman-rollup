@@ -1,13 +1,12 @@
 import { Button, Frog, TextInput } from 'frog'
 import { devtools } from 'frog/dev'
 import { serveStatic } from 'frog/serve-static'
-import { serve } from '@hono/node-server'
 import { ActionEvents, ActionExecutionStatus } from "@stackr/sdk";
-import { schemas } from "./stackr/action.ts";
-import { mru } from "./rollup.ts";
-import { reducers } from "./stackr/transitions.ts";
-import { HangmanState } from "./stackr/machine.ts";
-import { stackrConfig } from "../stackr.config.ts";
+import { schemas } from "../stackr/action.ts";
+import { mru } from "../rollup.ts";
+import { reducers } from "../stackr/transitions.ts";
+import { HangmanState } from "../stackr/machine.ts";
+import { stackrConfig } from "../../stackr.config.ts";
 import { Wallet } from "ethers";
 
  
