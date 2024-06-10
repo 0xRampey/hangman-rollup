@@ -3,11 +3,13 @@ import { devtools } from 'frog/dev'
 import { serveStatic } from 'frog/serve-static'
 import { ActionEvents, ActionExecutionStatus } from "@stackr/sdk";
 import { schemas } from "../stackr/action.ts";
-import { mru } from "../rollup.ts";
+import { mru} from "../rollup.ts";
+import { calculateGameProgress } from "../game.ts";
 import { reducers } from "../stackr/transitions.ts";
 import { HangmanState } from "../stackr/machine.ts";
 import { stackrConfig } from "../../stackr.config.ts";
 import { Wallet } from "ethers";
+
 
  
 export const app = new Frog()
@@ -135,10 +137,11 @@ console.log("signing", inputs)
 
 function getState() {
   const state = mru.stateMachines.getFirst()?.state as HangmanState
-  if (state.Progress === "") {
+  const progress = calculateGameProgress(state)
+  if (progress === "") {
     return "Welcome to Hangman! Start a new game by entering a word!"
   }
-  return state.Progress
+  return progress
 }
 
 function getImage(state: string, error: string) {

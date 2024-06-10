@@ -3,17 +3,19 @@
   "module": "index.ts",
   "type": "module",
   "scripts": {
-    "dev": "frog dev src/frameServer.tsx",
+    "dev": "frog dev src/frame/server.tsx",
     "test": "mocha --require ts-node/register src/**/*.test.ts"
   },
   "dependencies": {
-    "@stackr/sdk": "latest",
+    "@babel/preset-react": "^7.24.7",
+    "@stackr/sdk": "^0.4.2",
     "dotenv": "^16.4.5",
     "ethers": "^6.7.1",
     "express": "^4.18.2",
     "frog": "^0.11.6",
     "hono": "^4.4.4",
     "merkletreejs": "^0.3.11",
+    "react": "^18.3.1",
     "sqlite3": "^5.1.7"
   },
   "devDependencies": {

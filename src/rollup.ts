@@ -13,3 +13,4 @@ const mru = await MicroRollup({
 await mru.init();
 
 export { mru };
+
