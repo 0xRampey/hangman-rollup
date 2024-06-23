@@ -139,59 +139,91 @@ function getState() {
   const state = mru.stateMachines.getFirst()?.state as HangmanState
   const progress = calculateGameProgress(state)
   if (progress === "") {
-    return "Welcome to Hangman! Start a new game by entering a word!"
+    return "Welcome to 8-bit Hangman! \nStart a new game by entering a word!"
   }
   return progress
 }
 
 function getImage(state: string, error: string) {
   return (
-  <div
-  style={{
-    alignItems: 'center',
-    background: 'linear-gradient(to right, #432889, #17101F)',
-    backgroundSize: '100% 100%',
-    display: 'flex',
-    flexDirection: 'column',
-    flexWrap: 'nowrap',
-    height: '100%',
-    justifyContent: 'center',
-    textAlign: 'center',
-    width: '100%',
-  }}
->
-  <div
-    style={{
-      color: 'white',
-      fontSize: 30,
-      fontStyle: 'normal',
-      letterSpacing: '-0.025em',
-      lineHeight: 1.4,
-      marginTop: 30,
-      padding: '0 120px',
-      whiteSpace: 'pre-wrap',
-    }}
-  >
-    {state}
-  </div>
-{ error && <div
-  style={{
-    position: 'absolute',
-    bottom: '20px',
-    right: '20px',
-    backgroundColor: 'rgba(255, 0, 0, 0.8)',
-    color: 'white',
-    padding: '10px 20px',
-    borderRadius: '5px',
-    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-    zIndex: 1000,
-  }}
->
-  {error}
-</div>
-}
-</div>
-  )
+    <div
+      style={{
+        alignItems: 'center',
+        background: '#000',
+        backgroundImage: `
+          linear-gradient(0deg, transparent 24%, rgba(32, 255, 77, .05) 25%, rgba(32, 255, 77, .05) 26%, transparent 27%, transparent 74%, rgba(32, 255, 77, .05) 75%, rgba(32, 255, 77, .05) 76%, transparent 77%, transparent),
+          linear-gradient(90deg, transparent 24%, rgba(32, 255, 77, .05) 25%, rgba(32, 255, 77, .05) 26%, transparent 27%, transparent 74%, rgba(32, 255, 77, .05) 75%, rgba(32, 255, 77, .05) 76%, transparent 77%, transparent)
+        `,
+        backgroundSize: '50px 50px',
+        display: 'flex',
+        flexDirection: 'column',
+        flexWrap: 'nowrap',
+        height: '100%',
+        justifyContent: 'center',
+        textAlign: 'center',
+        width: '100%',
+      }}
+    >
+      <div
+        style={{
+          color: '#0f0',
+          fontFamily: '"Press Start 2P", "Courier New", monospace',
+          fontSize: 24,
+          fontStyle: 'normal',
+          letterSpacing: '0.1em',
+          lineHeight: 1.6,
+          padding: '30px',
+          whiteSpace: 'pre-wrap',
+          textShadow: '0 0 5px #0f0, 0 0 10px #0f0',
+          border: '4px solid #0f0',
+          boxShadow: '0 0 10px #0f0, inset 0 0 10px #0f0',
+          backgroundColor: 'rgba(0, 0, 0, 0.8)',
+          maxWidth: '80%',
+        }}
+      >
+        {state}
+      </div>
+      {error && (
+        <div
+          style={{
+            position: 'absolute',
+            bottom: '20px',
+            right: '20px',
+            backgroundColor: '#000',
+            color: '#f00',
+            fontFamily: '"Press Start 2P", "Courier New", monospace',
+            fontSize: 12,
+            padding: '10px',
+            border: '2px solid #f00',
+            boxShadow: '0 0 5px #f00, inset 0 0 5px #f00',
+            zIndex: 1000,
+            textTransform: 'uppercase',
+            lineHeight: 1.4,
+            maxWidth: '200px',
+            wordWrap: 'break-word',
+          }}
+        >
+         {error}
+        </div>
+      )}
+      <style>
+        {`
+          @font-face {
+            font-family: 'Press Start 2P';
+            src: url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+          }
+          @keyframes glow {
+            from {
+              text-shadow: 0 0 5px #0f0, 0 0 10px #0f0, 0 0 15px #0f0, 0 0 20px #0f0;
+            }
+            to {
+              text-shadow: 0 0 10px #0f0, 0 0 20px #0f0, 0 0 30px #0f0, 0 0 40px #0f0;
+            }
+          }
+        `}
+      </style>
+    </div>
+  );
 }
 
 function getIntents() {

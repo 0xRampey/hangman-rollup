@@ -16,7 +16,7 @@ const stackrConfig: StackrConfig = {
     batchTime: 50,
   },
   syncer: {
-    slotTime: 100000,
+    slotTime: 1000,
     vulcanRPC: process.env.VULCAN_RPC as string,
     L1RPC: process.env.L1_RPC as string,
   },
@@ -41,7 +41,7 @@ const stackrConfig: StackrConfig = {
     uri: process.env.DATABASE_URI as string,
   },
   registryContract: process.env.REGISTRY_CONTRACT as string,
-  preferredDA: "avail" as DA,
+  preferredDA: "celestia" as DA,
   logLevel: "debug",
 };
 

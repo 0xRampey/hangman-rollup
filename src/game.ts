@@ -18,13 +18,12 @@ function calculateGameProgress(state: HangmanState): string {
       progress += `Remaining attempts: ${6 - state.IncorrectGuesses}\n`;
       progress += state.HangmanStages[Math.min(state.IncorrectGuesses, 6)];
       if (isGameWon(state)) {
-        progress += "\nCongratulations, you've beaten the game!\n";
+        progress += "\nCongratulations, the game has been beaten!\n";
         for (const [address, player] of Object.entries(state.Players)) {
-          progress += `Player ${address} has ${player.CorrectGuesses} correct guesses.\n`;
+          progress += `Player ${address} got ${player.CorrectGuesses} correct guesses.\n`;
         }
       } else if (isGameLost(state)) {
-        progress += `\nSorry, you've lost the game. \nThe word was: ${state.TargetWord}\n`;
-        progress += state.HangmanStages[6]; // Show the final stage
+        progress += `\nGame over! The word was: ${state.TargetWord}\n`;
       }
   
       return progress;
