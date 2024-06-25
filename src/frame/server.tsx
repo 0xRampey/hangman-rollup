@@ -180,28 +180,31 @@ function getImage(state: string, error: string) {
         {state}
       </div>
       {error && (
-        <div
-          style={{
-            position: 'absolute',
-            bottom: '20px',
-            right: '20px',
-            backgroundColor: '#000',
-            color: '#f00',
-            fontFamily: '"Press Start 2P", "Courier New", monospace',
-            fontSize: 12,
-            padding: '10px',
-            border: '2px solid #f00',
-            boxShadow: '0 0 5px #f00, inset 0 0 5px #f00',
-            zIndex: 1000,
-            textTransform: 'uppercase',
-            lineHeight: 1.4,
-            maxWidth: '200px',
-            wordWrap: 'break-word',
-          }}
-        >
-         {error}
-        </div>
-      )}
+  <div
+    style={{
+      position: 'absolute',
+      top: '20px',
+      right: '20px',
+      backgroundColor: '#000',
+      color: '#ff0000',
+      fontFamily: '"Press Start 2P", "Courier New", monospace',
+      fontSize: 14,
+      fontWeight: 'bold',
+      padding: '15px',
+      border: '3px solid #ff0000',
+      boxShadow: '0 0 10px #ff0000, 0 0 20px #ff0000, inset 0 0 10px #ff0000',
+      zIndex: 1000,
+      textTransform: 'uppercase',
+      lineHeight: 1.4,
+      maxWidth: '250px',
+      wordWrap: 'break-word',
+      textShadow: '0 0 5px #ff0000, 0 0 10px #ff0000',
+      animation: 'errorGlow 1s ease-in-out infinite alternate',
+    }}
+  >
+    {error}
+  </div>
+)}
       <style>
         {`
           @font-face {

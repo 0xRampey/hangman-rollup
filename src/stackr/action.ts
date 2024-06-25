@@ -12,8 +12,6 @@ export const guessLetterSchema = new ActionSchema("guessLetter", {
   player: SolidityType.STRING,
 });
 
-// transferSchema is a collection of all the transfer actions
-// that can be performed on the rollup
 export const schemas = {
   createGame: createGameSchema,
   guessLetter: guessLetterSchema,

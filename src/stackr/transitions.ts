@@ -20,13 +20,13 @@ const createGame: STF<Hangman, CreateGameInput> = {
       // Reset game on win or loss
       state = resetGame(state);
     } else {
-      throw new Error("Game is already in progress");
+      throw new Error("A game is already in progress!");
     }
 
     const { word, creator} = inputs;
     // Checks for word validity
     if (word.length === 0) {
-      throw new Error("Word must not be empty");
+      throw new Error("Word cannot be empty!");
     }
     // word should be alpha numeric optionally with spaces
     if (!word.match(/^[a-zA-Z0-9]+(?: [a-zA-Z0-9]+)*$/)) {
@@ -42,19 +42,19 @@ const createGame: STF<Hangman, CreateGameInput> = {
 const guessLetter: STF<Hangman, GuessLetterInput> = {
   handler: ({ inputs, state }) => {
     if (isGameWon(state) || isGameLost(state)) {
-      throw new Error("Game is not in progress");
+      throw new Error("The game is not in progress. Create a game first!");
     }
 
     const { letter, player } = inputs;
     if (player === state.GameCreator) {
-      throw new Error("Game creator cannot guess the letter");
+      throw new Error("The game creator cannot guess the word!");
     }
     if (letter.length !== 1) {
-      throw new Error("Guess must be a single letter");
+      throw new Error("Guess must be a single letter!");
     }
     // should be alpha numeric
     if (!letter.match(/^[a-zA-Z0-9]$/)) {
-      throw new Error("Guess must be alphanumeric");
+      throw new Error("Your guess must be alphanumeric");
     }
     if (!state["Players"][player]) {
       state["Players"][player] = {
