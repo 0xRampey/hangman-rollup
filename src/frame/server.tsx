@@ -1,7 +1,7 @@
 import { Button, Frog, TextInput } from 'frog'
 import { devtools } from 'frog/dev'
 import { serveStatic } from 'frog/serve-static'
-import { ActionEvents, ActionExecutionStatus } from "@stackr/sdk";
+import { ActionConfirmationStatus } from "@stackr/sdk";
 import { schemas } from "../stackr/action.ts";
 import { mru} from "../rollup.ts";
 import { calculateGameProgress } from "../game.ts";
@@ -69,21 +69,17 @@ app.frame('/', async (c) => {
   try {
     const newAction = schema.actionFrom({ inputs, msgSender, signature });
     const ack = await mru.submitAction(action, newAction);
-    const actionHash = ack.actionHash;
-    error = await new Promise((resolve) => {
-      events.subscribe(ActionEvents.EXECUTION_STATUS, (action) => {
-        if (action.actionHash === actionHash) {
-          if (action.status === ActionExecutionStatus.ACCEPTED) {
-            console.log(`Action ${actionHash} executed successfully.`);
-            resolve('')
-          } else if (action.status === ActionExecutionStatus.REVERTED) {
-            console.error(`Action ${actionHash} failed to executed.`);
-            resolve('Action failed to execute! Please try again.')
-          }
-        }
-      });
-    });
-    console.log("error", error)
+    var error = await ack.waitFor(ActionConfirmationStatus.C1).then((action) => {
+      if (action.confirmationStatus === ActionConfirmationStatus.C1) {
+        console.log("action confirmed", action)
+        return ""
+      }
+      if (action.confirmationStatus === ActionConfirmationStatus.C1X) {
+        console.log("action reverted")
+        return action.errors?.[0].message || "Action failed to execute! Please try again."
+      }
+      return "Unknown error occurred! Please try again.";
+    })
   } catch (e: any) {
     console.error(e)
     error = e.message
