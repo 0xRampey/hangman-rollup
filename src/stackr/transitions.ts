@@ -5,6 +5,7 @@ import { resetGame, isGameWon, isGameLost } from "./utils.ts";
 type CreateGameInput = {
   word: string;
   creator: string;
+  hint: string;
 };
 
 type GuessLetterInput = {
@@ -23,7 +24,11 @@ const createGame: STF<Hangman, CreateGameInput> = {
       throw new Error("A game is already in progress!");
     }
 
-    const { word, creator} = inputs;
+    const { word, creator, hint } = inputs;
+
+    if (hint.length === 0) {
+      throw new Error("Hint cannot be empty!");
+    }
     // Checks for word validity
     if (word.length === 0) {
       throw new Error("Word cannot be empty!");
@@ -35,6 +40,7 @@ const createGame: STF<Hangman, CreateGameInput> = {
     state.TargetWord = word.toLowerCase();
     state.GameCreator = creator;
     state.GameID = state.GameID + 1;
+    state.Hint = hint;
     return state;
   },
 };

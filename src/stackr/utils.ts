@@ -9,6 +9,7 @@ import { HangmanState } from "./machine.ts";
     state.TargetWord = "";
     state.GameCreator = "";
     state.NumPlayers = 0;
+    state.Hint = "";
     return state;
   };
 

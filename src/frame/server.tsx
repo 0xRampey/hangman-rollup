@@ -12,14 +12,24 @@ import { Wallet } from "ethers";
 import { getImage } from "./image.tsx";
 import { isGameLost, isGameWon } from '../stackr/utils.ts';
 
+type State = {
+  gameWord: string
+}
 
- 
-export const app = new Frog()
+export const app = new Frog<{State: State}>(
+  {
+    initialState: {
+      gameWord: ""
+    }
+  }
+)
 
 const { actions, chain, events } = mru;
+
+
  
 app.frame('/', async (c) => {
-  const { buttonValue, inputText } = c
+  const { buttonValue, inputText, deriveState } = c
   const address = c.frameData?.address
   const fid = c.frameData?.fid
   var error = ""
@@ -60,7 +70,7 @@ app.frame('/', async (c) => {
   }
   const action = buttonValue as keyof typeof schemas;
   const schema = schemas[action];
-  const { msgSender, signature, inputs } = await getBody(action, guess, fid.toString()) as {
+  const { msgSender, signature, inputs } = await getBody(action, guess, fid.toString(), deriveState().gameWord) as {
     msgSender: string;
     signature: string;
     inputs: any;
@@ -103,12 +113,14 @@ const getBody = async (
   actionName: ActionName,
   data: string,
   casterFID: string,
+  gameWord: string,
 ) => {
   const inputs =
     actionName === "createGame"
       ? {
-          word: data,
+          word: gameWord,
           creator: casterFID,
+          hint: data,
         }
       : {
           letter: data,
@@ -138,9 +150,10 @@ function getContent() {
 function getIntents() {
   const state = mru.stateMachines.getFirst()?.state as HangmanState
   if (!isGameInProgress(state) || isGameLost(state) || isGameWon(state)) {
+    // If the game is not in progress, the player has lost, or the player has won, show the create game intent
     return [
-      <TextInput placeholder="Enter word" />,
-      <Button value="createGame">Create Game</Button>,
+      <TextInput placeholder="Enter a word to guess" />,
+      <Button value="newGame" action="/hint">Start a new game 🕹</Button>,
     ]
   } else {
     return [
@@ -150,4 +163,18 @@ function getIntents() {
   }
  
 }
+
+app.frame('/hint', async (c) => {
+  const { buttonValue, inputText, deriveState } = c
+  deriveState((state) => {
+    state.gameWord = inputText || "";
+  })
+  return c.res({
+    image: getImage(getContent(), ""),
+    intents: [
+      <TextInput placeholder="Enter a hint pls" />,
+      <Button value="createGame" action="/">Go 🏁</Button>,
+    ]
+  })
+})
 

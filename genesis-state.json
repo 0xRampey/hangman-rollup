@@ -2,6 +2,7 @@
     "state": {
         "TargetWord": "",
         "GameCreator": "",
+        "Hint": "",
         "GameID": 0,
         "GuessedLetters": [],
         "IncorrectGuesses": 0,

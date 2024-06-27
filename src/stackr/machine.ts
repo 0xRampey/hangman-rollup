@@ -9,6 +9,7 @@ export type HangmanState = {
   NumPlayers: number;
   GameCreator: AddressLike;
   GameID: number;
+  Hint: string;
   GuessedLetters: string[];
   IncorrectGuesses: number;
   Players: {

@@ -4,6 +4,7 @@ import { ActionSchema, SolidityType } from "@stackr/sdk";
 export const createGameSchema = new ActionSchema("createGame", {
   word: SolidityType.STRING,
   creator: SolidityType.STRING,
+  hint: SolidityType.STRING,
 });
 
 export const guessLetterSchema = new ActionSchema("guessLetter", {

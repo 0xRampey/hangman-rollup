@@ -14,7 +14,8 @@ function calculateGameProgress(state: HangmanState): string {
           guessedLettersSet.has(letter) ? letter : letter === " " ? " " : "_",
         )
         .join(" ");
-      progress = `Current progress: ${display}\n`;
+      progress = `Hint: ${state.Hint}\n`;
+      progress += `Current progress: ${display}\n`;
       progress += `Remaining attempts: ${6 - state.IncorrectGuesses}\n`;
       progress += state.HangmanStages[Math.min(state.IncorrectGuesses, 6)];
       if (isGameWon(state)) {
