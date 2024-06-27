@@ -1,4 +1,4 @@
-function getImage(state: string, error: string) {
+function getImage(content: string, error: string) {
     return (
       <div
         style={{
@@ -35,7 +35,7 @@ function getImage(state: string, error: string) {
             maxWidth: '80%',
           }}
         >
-          {state}
+          {content}
         </div>
         {error && (
     <div

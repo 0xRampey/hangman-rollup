@@ -3,9 +3,9 @@ import { HangmanState } from "./stackr/machine.ts";
 
 function calculateGameProgress(state: HangmanState): string {
     var progress = ""
-    if (state.GameCreator == "") {
+    if (!isGameInProgress(state)) {
       // No game creator, so no game in progress
-      return "Welcome to Hangman! Start a new game by entering a word!"
+      return "Welcome to 8-bit Hangman! \nStart a new game by entering a word!"
     }
     
       const guessedLettersSet = new Set(state.GuessedLetters); // Convert array to Set
@@ -29,5 +29,9 @@ function calculateGameProgress(state: HangmanState): string {
       return progress;
     };
 
-export { calculateGameProgress };
+    function isGameInProgress(state: HangmanState): boolean {
+      return state.GameCreator !== "";
+    }
+
+export { calculateGameProgress, isGameInProgress };
 

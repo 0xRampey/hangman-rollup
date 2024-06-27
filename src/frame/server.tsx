@@ -4,12 +4,13 @@ import { serveStatic } from 'frog/serve-static'
 import { ActionConfirmationStatus } from "@stackr/sdk";
 import { schemas } from "../stackr/action.ts";
 import { mru} from "../rollup.ts";
-import { calculateGameProgress } from "../game.ts";
+import { calculateGameProgress, isGameInProgress } from "../game.ts";
 import { reducers } from "../stackr/transitions.ts";
 import { HangmanState } from "../stackr/machine.ts";
 import { stackrConfig } from "../../stackr.config.ts";
 import { Wallet } from "ethers";
 import { getImage } from "./image.tsx";
+import { isGameLost, isGameWon } from '../stackr/utils.ts';
 
 
  
@@ -25,7 +26,7 @@ app.frame('/', async (c) => {
 
   if (!fid) {
     return c.res({
-      image: getImage(getState(), error),
+      image: getImage(getContent(), error),
       intents: getIntents()
     })
   }
@@ -34,7 +35,7 @@ app.frame('/', async (c) => {
   if (buttonValue === undefined) {
     // First render for user
     return c.res({
-      image: getImage(getState(), error),
+      image: getImage(getContent(), error),
       intents: getIntents()
     })
 }
@@ -44,7 +45,7 @@ app.frame('/', async (c) => {
   if (guess === undefined) {
     error = "Choose a letter to guess willya?"
     return c.res({
-      image: getImage(getState(), error),
+      image: getImage(getContent(), error),
       intents: getIntents()
     })
   }
@@ -53,7 +54,7 @@ app.frame('/', async (c) => {
     error = "no reducer for action"
     console.error("No reducer for action", buttonValue);
     return c.res({
-      image: getImage(getState(), error),
+      image: getImage(getContent(), error),
       intents: getIntents()
     })
   }
@@ -84,7 +85,7 @@ app.frame('/', async (c) => {
   }
   console.log("error", error)
   return c.res({
-    image: getImage(getState(), error),
+    image: getImage(getContent(), error),
     intents: getIntents()
   })
 })
@@ -129,20 +130,24 @@ console.log("signing", inputs)
   };
 };
 
-function getState() {
+function getContent() {
   const state = mru.stateMachines.getFirst()?.state as HangmanState
-  const progress = calculateGameProgress(state)
-  if (progress === "") {
-    return "Welcome to 8-bit Hangman! \nStart a new game by entering a word!"
-  }
-  return progress
+  return calculateGameProgress(state)
 }
 
 function getIntents() {
-  return [
-    <TextInput placeholder="Enter word/letter" />,
-    <Button value="createGame">Create Game</Button>,
-    <Button value="guessLetter">Guess Letter</Button>,
-  ]
+  const state = mru.stateMachines.getFirst()?.state as HangmanState
+  if (!isGameInProgress(state) || isGameLost(state) || isGameWon(state)) {
+    return [
+      <TextInput placeholder="Enter word" />,
+      <Button value="createGame">Create Game</Button>,
+    ]
+  } else {
+    return [
+      <TextInput placeholder="Enter letter" />,
+      <Button value="guessLetter">Guess Letter</Button>,
+    ]
+  }
+ 
 }
 
