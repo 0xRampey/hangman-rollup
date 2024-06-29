@@ -11,6 +11,7 @@ import { stackrConfig } from "../../stackr.config.ts";
 import { Wallet } from "ethers";
 import { getImage } from "./image.tsx";
 import { isGameLost, isGameWon } from '../stackr/utils.ts';
+import { neynar } from 'frog/hubs'
 
 type State = {
   gameWord: string
@@ -20,13 +21,12 @@ export const app = new Frog<{State: State}>(
   {
     initialState: {
       gameWord: ""
-    }
+    },
+    hub: neynar({ apiKey: 'NEYNAR_FROG_FM' }),
   }
 )
 
 const { actions, chain, events } = mru;
-
-
  
 app.frame('/', async (c) => {
   const { buttonValue, inputText, deriveState } = c
@@ -36,6 +36,9 @@ app.frame('/', async (c) => {
 
   if (!fid) {
     return c.res({
+      headers: {
+        'Cache-Control': 'max-age=0'
+    },
       image: getImage(getContent(), error),
       intents: getIntents()
     })
@@ -45,6 +48,9 @@ app.frame('/', async (c) => {
   if (buttonValue === undefined) {
     // First render for user
     return c.res({
+      headers: {
+        'Cache-Control': 'max-age=0'
+    },
       image: getImage(getContent(), error),
       intents: getIntents()
     })
@@ -55,6 +61,9 @@ app.frame('/', async (c) => {
   if (guess === undefined) {
     error = "Choose a letter to guess willya?"
     return c.res({
+      headers: {
+        'Cache-Control': 'max-age=0'
+    },
       image: getImage(getContent(), error),
       intents: getIntents()
     })
@@ -64,6 +73,9 @@ app.frame('/', async (c) => {
     error = "no reducer for action"
     console.error("No reducer for action", buttonValue);
     return c.res({
+      headers: {
+        'Cache-Control': 'max-age=0'
+    },
       image: getImage(getContent(), error),
       intents: getIntents()
     })
@@ -95,12 +107,13 @@ app.frame('/', async (c) => {
   }
   console.log("error", error)
   return c.res({
+    headers: {
+        'Cache-Control': 'max-age=0'
+    },
     image: getImage(getContent(), error),
     intents: getIntents()
   })
 })
- 
-devtools(app, { serveStatic })
 
 type ActionName = keyof typeof schemas;
 const walletOne = new Wallet(
@@ -178,3 +191,10 @@ app.frame('/hint', async (c) => {
   })
 })
 
+devtools(app, { serveStatic })
+
+Bun.serve({
+  fetch: app.fetch,
+  port: 3000,
+})
+console.log('Server is running on port 3000')
