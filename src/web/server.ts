@@ -26,7 +26,7 @@ playground.addGetMethod(
   },
 );
 
-const { actions, chain, events } = mru;
+const { events } = mru;
 
 app.post("/:reducerName", async (req: Request, res: Response) => {
   const { reducerName } = req.params;
