@@ -156,4 +156,4 @@ function getWelcomeScreen() {
   );
 }
 
-export { getImage, getWelcomeScreen }
+export { getImage, getWelcomeScreen };
