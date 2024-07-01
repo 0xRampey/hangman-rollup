@@ -46,7 +46,7 @@ const stackrConfig: StackrConfig = {
     uri: process.env.DATABASE_URI as string,
   },
   registryContract: process.env.REGISTRY_CONTRACT as string,
-  preferredDA: "celestia" as DA,
+  preferredDA: DA.CELESTIA,
   logLevel: "debug",
 };
 

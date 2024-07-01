@@ -20,7 +20,8 @@
     "forceConsistentCasingInFileNames": true,
     "allowJs": true,
     "types": [
-      "mocha"
+      "mocha",
+      "bun"
     ]
   },
   "include": [

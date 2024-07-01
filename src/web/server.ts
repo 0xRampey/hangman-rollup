@@ -2,11 +2,11 @@ import express, { Request, Response } from "express";
 
 import { ActionEvents, ActionExecutionStatus } from "@stackr/sdk";
 import { Playground } from "@stackr/sdk/plugins";
-import { schemas } from "../stackr/action.ts";
-import { mru } from "../rollup.ts";
-import { reducers } from "../stackr/transitions.ts";
-import { HangmanState } from "../stackr/machine.ts";
 import { stackrConfig } from "../../stackr.config.ts";
+import { mru } from "../rollup.ts";
+import { schemas } from "../stackr/action.ts";
+import { HangmanState } from "../stackr/machine.ts";
+import { reducers } from "../stackr/transitions.ts";
 
 const { domain } = stackrConfig;
 
@@ -26,7 +26,7 @@ playground.addGetMethod(
   },
 );
 
-const { actions, chain, events } = mru;
+const { events } = mru;
 
 app.post("/:reducerName", async (req: Request, res: Response) => {
   const { reducerName } = req.params;
