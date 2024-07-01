@@ -25,7 +25,9 @@ npm i
 - Setup env variables for Micro-rollup
 
 ```sh
-touch .env
+# .dev.env for development
+# .prod.env for production
+touch .dev.env
 # and add the following content into it.
 PRIVATE_KEY= # private key of the account
 # pick these values from https://docs.stf.xyz/build/references/providers-and-rpc for Sepolia
@@ -42,9 +44,15 @@ npx @stackr/cli@latest register
 npx @stackr/cli@latest deploy
 ```
 
-- Start the game
+- Start the game in dev mode
 
 ```sh
 npm run dev
 # open localhost:5173/dev
+```
+
+- Start in production mode
+
+```sh
+npm start
 ```
